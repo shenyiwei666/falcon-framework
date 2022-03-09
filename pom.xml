@@ -17,8 +17,9 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>falcon-log-spring-boot-starter</module>
+        <module>falcon-logging-spring-boot-starter</module>
         <module>falcon-dependencies</module>
+        <module>falcon-commom</module>
     </modules>
 
     <name>falcon-framework</name>
@@ -92,10 +93,18 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.falconframework</groupId>
-            <artifactId>falcon-log-spring-boot-starter</artifactId>
+            <artifactId>falcon-commom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.falconframework</groupId>
+            <artifactId>falcon-logging-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
@@ -106,6 +115,10 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
         </dependency>
     </dependencies>
 
@@ -118,322 +131,12 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-dependencies</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
-<!--                <version>${spring-cloud.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <artifactId>falcon-log-spring-boot-starter</artifactId>-->
-<!--                <groupId>org.falconframework</groupId>-->
-<!--                <version>${falcon.version}</version>-->
-<!--            </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
-<!--                <version>${spring-cloud-alibaba.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
-<!--                <version>${spring-cloud-alibaba.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
-<!--                <version>${spring-cloud-alibaba.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba.boot</groupId>-->
-<!--                <artifactId>nacos-config-spring-boot-starter</artifactId>-->
-<!--                <version>${nacos-config-spring-boot-starter.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.alibaba</groupId>-->
-<!--                <artifactId>fastjson</artifactId>-->
-<!--                <version>${fastjson_version}</version>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <artifactId>spring</artifactId>-->
-<!--                        <groupId>org.springframework</groupId>-->
-<!--                    </exclusion>-->
-<!--                    <exclusion>-->
-<!--                        <artifactId>log4j</artifactId>-->
-<!--                        <groupId>log4j</groupId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo-spring-boot-starter</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo-spring-boot-actuator</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <groupId>io.github.openfeign</groupId>-->
-<!--                <artifactId>feign-core</artifactId>-->
-<!--                <version>${feign.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.github.openfeign</groupId>-->
-<!--                <artifactId>feign-hystrix</artifactId>-->
-<!--                <version>${feign.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.github.openfeign</groupId>-->
-<!--                <artifactId>feign-slf4j</artifactId>-->
-<!--                <version>${feign.version}</version>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <groupId>net.java.dev.jna</groupId>-->
-<!--                <artifactId>jna</artifactId>-->
-<!--                <version>${jna.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>mysql</groupId>-->
-<!--                <artifactId>mysql-connector-java</artifactId>-->
-<!--                <version>${mysql.version}</version>-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <artifactId>protobuf-java</artifactId>-->
-<!--                        <groupId>com.google.protobuf</groupId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.oracle</groupId>-->
-<!--                <artifactId>ojdbc6</artifactId>-->
-<!--                <version>${ojdbc6.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.zaxxer</groupId>-->
-<!--                <artifactId>HikariCP</artifactId>-->
-<!--                <version>${hikaricp.version}</version>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis</groupId>-->
-<!--                <artifactId>mybatis</artifactId>-->
-<!--                <version>${mybatis.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis</groupId>-->
-<!--                <artifactId>mybatis-spring</artifactId>-->
-<!--                <version>${mybatis-spring.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.mybatis.spring.boot</groupId>-->
-<!--                <artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--                <version>${mybatis-spring-boot-starter.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>-->
-<!--                <version>${dynamic-datasource-spring-boot.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-annotation</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-core</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.baomidou</groupId>-->
-<!--                <artifactId>mybatis-plus-extension</artifactId>-->
-<!--                <version>${mybatis-plus.version}</version>-->
-<!--            </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>org.hibernate.validator</groupId>-->
-<!--                <artifactId>hibernate-validator</artifactId>-->
-<!--                <version>${hibernate-validator.version}</version>-->
-<!--            </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>io.swagger</groupId>-->
-<!--                <artifactId>swagger-annotations</artifactId>-->
-<!--                <version>${swagger-annotations.version}</version>-->
-<!--                <scope>compile</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-core</artifactId>-->
-<!--                <version>${springfox-swagger2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-swagger2</artifactId>-->
-<!--                <version>${springfox-swagger2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-swagger-ui</artifactId>-->
-<!--                <version>${springfox-swagger2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>io.springfox</groupId>-->
-<!--                <artifactId>springfox-bean-validators</artifactId>-->
-<!--                <version>${springfox-swagger2.version}</version>-->
-<!--            </dependency>-->
-
-<!--            <dependency>-->
-<!--                <groupId>org.projectlombok</groupId>-->
-<!--                <artifactId>lombok</artifactId>-->
-<!--                <version>${lombok.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.github.pagehelper</groupId>-->
-<!--                <artifactId>pagehelper</artifactId>-->
-<!--                <version>${pagehelper.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.ctrip.framework.apollo</groupId>-->
-<!--                <artifactId>apollo-client</artifactId>-->
-<!--                <version>${apollo.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.xuxueli</groupId>-->
-<!--                <artifactId>xxl-job-core</artifactId>-->
-<!--                <version>${xxl-job.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.rocketmq</groupId>-->
-<!--                <artifactId>rocketmq-spring-boot-starter</artifactId>-->
-<!--                <version>${rocketmq-spring-boot-starter.version}</version>-->
-<!--            </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>org.apache.commons</groupId>-->
-<!--                <artifactId>commons-lang3</artifactId>-->
-<!--                <version>${commons-lang3.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>commons-codec</groupId>-->
-<!--                <artifactId>commons-codec</artifactId>-->
-<!--                <version>${commons-codec.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.commons</groupId>-->
-<!--                <artifactId>commons-pool2</artifactId>-->
-<!--                <version>${commons-pool2.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.google.guava</groupId>-->
-<!--                <artifactId>guava</artifactId>-->
-<!--                <version>${guava.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                <artifactId>jackson-core</artifactId>-->
-<!--                <version>${jackson-core.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--                <artifactId>jackson-annotations</artifactId>-->
-<!--                <version>${jackson-core.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.yaml</groupId>-->
-<!--                <artifactId>snakeyaml</artifactId>-->
-<!--                <version>${snakeyaml.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>cn.hutool</groupId>-->
-<!--                <artifactId>hutool-all</artifactId>-->
-<!--                <version>${hutool.version}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>joda-time</groupId>-->
-<!--                <artifactId>joda-time</artifactId>-->
-<!--                <version>${joda-time.verson}</version>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.slf4j</groupId>-->
-<!--                <artifactId>slf4j-api</artifactId>-->
-<!--                <version>${slf4j-api.version}</version>-->
-<!--            </dependency>-->
-
-
-<!--            <dependency>-->
-<!--                <groupId>junit</groupId>-->
-<!--                <artifactId>junit</artifactId>-->
-<!--                <version>${junit.version}</version>-->
-<!--                <scope>test</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-starter-test</artifactId>-->
-<!--                <version>${spring-boot.version}</version>-->
-<!--                <scope>test</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.mockito</groupId>-->
-<!--                <artifactId>mockito-all</artifactId>-->
-<!--                <version>${mockito-al.version}</version>-->
-<!--                <scope>test</scope>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
-<!--                <plugin>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                    <version>${spring-boot.version}</version>-->
-<!--                    <executions>-->
-<!--                        <execution>-->
-<!--                            <goals>-->
-<!--                                <goal>repackage</goal>-->
-<!--                            </goals>-->
-<!--                        </execution>-->
-<!--                    </executions>-->
-<!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
@@ -452,48 +155,6 @@
                         </execution>
                     </executions>
                 </plugin>
-<!--                <plugin>-->
-<!--                    <artifactId>maven-release-plugin</artifactId>-->
-<!--                    <version>${maven.release.version}</version>-->
-<!--                    <configuration>-->
-<!--                        <autoVersionSubmodules>true</autoVersionSubmodules>-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                    <version>${maven.compiler.version}</version>-->
-<!--                    <configuration>-->
-<!--                        <encoding>${project.build.sourceEncoding}</encoding>-->
-<!--                        <source>${maven.compiler.source}</source>-->
-<!--                        <target>${maven.compiler.target}</target>-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-resources-plugin</artifactId>-->
-<!--                    <configuration>-->
-<!--                        <useDefaultDelimiters>false</useDefaultDelimiters>-->
-<!--                        <delimiters>-->
-<!--                            <delimiter>$[*]</delimiter>-->
-<!--                        </delimiters>-->
-<!--                        <encoding>UTF-8</encoding>-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-install-plugin</artifactId>-->
-<!--                    <version>${maven.install.version}</version>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-deploy-plugin</artifactId>-->
-<!--                    <version>${maven.deploy.version}</version>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-source-plugin</artifactId>-->
-<!--                    <version>${maven.sourcce.version}</version>-->
-<!--                </plugin>-->
-<!--                <plugin>-->
-<!--                    <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                    <version>${maven-surefire-plugin}</version>-->
-<!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
