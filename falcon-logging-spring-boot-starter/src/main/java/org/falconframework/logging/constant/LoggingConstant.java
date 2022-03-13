@@ -16,6 +16,6 @@ public class LoggingConstant {
     /**
      * 服务器ip
      */
-    public final static String SERVER_IP = "X-Falcon-ServerIp";
+    public final static String SERVER_IP = "X-Server-Ip";
 
 }

@@ -6,7 +6,7 @@
     <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="falcon"/>
     <contextName>${logName}</contextName>
 
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %level | %thread | %logger:%line | %X{X-B3-TraceId} | %msg%n" />
+    <property name="LOG_PATTERN" value="%d{yyyy-MMdd-HH:mm:ss.SSS} | %level | %thread | %logger{36}:%line | %X{X-B3-TraceId} | %msg%n" />
 
     <!-- 控制台 -->
     <appender name="STDOUT_APPENDER" class="ch.qos.logback.core.ConsoleAppender">

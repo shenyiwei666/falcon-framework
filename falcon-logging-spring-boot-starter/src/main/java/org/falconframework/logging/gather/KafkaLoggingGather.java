@@ -21,9 +21,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @version 1.0.0
  * @date 2022/1/11
  */
-public class KafkaGather implements LoggingGather {
+public class KafkaLoggingGather implements LoggingGather {
 
-    private LoggingConfig config = LoggingContext.getLoggingConfig();
+    private LoggingConfig config;
     private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private KafkaProducer<String, String> producer;
     private boolean isStarted = false;
@@ -45,13 +45,18 @@ public class KafkaGather implements LoggingGather {
         if (this.isStarted) {
             return;
         }
+        initConfig();
         initProducer();
         startSender();
         this.isStarted = true;
     }
 
+    private void initConfig() {
+        this.config = LoggingContext.getLoggingConfig();
+    }
+
     private void initProducer() {
-        LoggingConfig.KafkaConfig kafkaConfig = this.config.getKafka();
+        LoggingConfig.KafkaConfig kafkaConfig = config.getKafka();
         Map<String, Object> producerConfig = new HashMap();
         producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getServers());
         producerConfig.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.getAcks());

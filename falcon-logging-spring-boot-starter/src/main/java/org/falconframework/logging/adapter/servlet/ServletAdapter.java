@@ -2,7 +2,7 @@ package org.falconframework.logging.adapter.servlet;
 
 import org.falconframework.common.util.NetworkUtil;
 import org.falconframework.logging.constant.LoggingConstant;
-import org.falconframework.logging.util.LoggingUtil;
+import org.falconframework.logging.util.TraceIdGenerator;
 import org.slf4j.MDC;
 
 import javax.servlet.*;
@@ -34,7 +34,7 @@ public class ServletAdapter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String traceId = request.getHeader(LoggingConstant.TRACE_ID);
         if (traceId == null) {
-            traceId = LoggingUtil.generateTraceId();
+            traceId = TraceIdGenerator.generate();
         }
         MDC.put(LoggingConstant.TRACE_ID, traceId);
     }

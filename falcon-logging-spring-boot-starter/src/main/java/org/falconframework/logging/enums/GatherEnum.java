@@ -1,6 +1,6 @@
 package org.falconframework.logging.enums;
 
-import org.falconframework.logging.gather.KafkaGather;
+import org.falconframework.logging.gather.KafkaLoggingGather;
 import org.falconframework.logging.gather.LoggingGather;
 
 /**
@@ -15,7 +15,7 @@ public enum GatherEnum {
     /**
      * kafka
      */
-    KAFKA("kafka", new KafkaGather());
+    KAFKA("kafka", new KafkaLoggingGather());
 
 
     GatherEnum(String value, LoggingGather instance) {

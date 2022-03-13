@@ -1,4 +1,4 @@
-package org.falconframework.common.init.configure;
+package org.falconframework.common.init;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.ClientHttpRequestFactory;

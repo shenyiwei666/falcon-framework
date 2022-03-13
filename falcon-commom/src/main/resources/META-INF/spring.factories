@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.falconframework.common.init.configure.RestTemplateAutoConfiguration
+    org.falconframework.common.init.RestTemplateAutoConfiguration
