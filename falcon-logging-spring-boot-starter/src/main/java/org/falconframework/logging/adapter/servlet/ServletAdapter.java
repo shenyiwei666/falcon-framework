@@ -10,13 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/1
- */
 public class ServletAdapter implements Filter {
 
     @Override

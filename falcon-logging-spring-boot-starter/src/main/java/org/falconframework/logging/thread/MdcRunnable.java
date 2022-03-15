@@ -4,13 +4,6 @@ import org.slf4j.MDC;
 
 import java.util.Map;
 
-/**
- * 将主线程中的MDC信息传递到子线程中
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/4
- */
 public abstract class MdcRunnable implements Runnable {
 
     private Map<String, String> parentMdc;

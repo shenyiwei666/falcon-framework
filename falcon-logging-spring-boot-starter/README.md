@@ -7,7 +7,7 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 1. 把每次写入的日志都加上traceId，方便查询全链路日志
 2. 把写入的日志发送到kafka，然后通过ELK处理查询日志
 3. 对所有controller都记录入参和出参日志，每个请求生成1个traceId
-4. 服务间调用时传递traceId，目前支持的方式有RestTemplate、Feign
+4. 服务间调用时传递traceId，目前支持的方式有RestTemplate、Feign、Dubbo
 5. MQ生产者的traceId传递到消费者，目前支持的MQ有RabbitMQ
 
 ##怎么使用我

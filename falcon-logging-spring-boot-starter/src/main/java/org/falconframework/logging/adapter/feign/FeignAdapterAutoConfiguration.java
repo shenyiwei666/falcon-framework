@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 public class FeignAdapterAutoConfiguration {
 
     @Bean
-    @ConditionalOnClass({RequestInterceptor.class})
     public FeignAdapter feignAdapter() {
         return new FeignAdapter();
     }

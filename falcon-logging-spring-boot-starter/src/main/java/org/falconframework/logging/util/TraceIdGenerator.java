@@ -3,13 +3,6 @@ package org.falconframework.logging.util;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * traceId生成器
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/10
- */
 public class TraceIdGenerator {
     /**
      * 长度为32的字典集合，每个元素为1位字符

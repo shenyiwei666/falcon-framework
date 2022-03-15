@@ -8,13 +8,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/4
- */
 public class RestTemplateProcessor implements BeanPostProcessor {
 
     @Autowired

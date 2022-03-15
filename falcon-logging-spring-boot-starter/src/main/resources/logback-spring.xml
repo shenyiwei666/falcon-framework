@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd">
-    <springProperty scope="context" name="logLevel" source="logback.level" defaultValue="INFO"/>
-    <!-- 读取spring.application.name中的属性来生成日志文件名 -->
-    <springProperty scope="context" name="logName" source="spring.application.name" defaultValue="falcon"/>
+
+    <springProperty name="logLevel" defaultValue="INFO" source="logback.level" scope="context" />
+    <springProperty name="logName" source="spring.application.name" defaultValue="falcon" scope="context" />
+    <property name="logPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %level | %thread | %logger{36}:%line | %X{X-B3-TraceId} | %msg%n" />
+
     <contextName>${logName}</contextName>
 
-    <property name="LOG_PATTERN" value="%d{yyyy-MMdd-HH:mm:ss.SSS} | %level | %thread | %logger{36}:%line | %X{X-B3-TraceId} | %msg%n" />
-
     <!-- 控制台 -->
-    <appender name="STDOUT_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${logPattern}</pattern>
         </encoder>
     </appender>
 
     <!-- INFO 文件 -->
-    <appender name="FILE_APPENDER" class="org.falconframework.logging.LoggingAppender">
+    <appender name="GENERAL_FILE" class="org.falconframework.logging.LoggingAppender">
         <File>logs/${logName}.log</File>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>${logPattern}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/${logName}.%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
@@ -39,11 +39,11 @@
     </appender>
 
     <!-- ERROR 文件 -->
-    <appender name="ERROR_APPENDER" class="org.falconframework.logging.LoggingAppender">
+    <appender name="ERROR_FILE" class="org.falconframework.logging.LoggingAppender">
         <File>logs/${logName}.error.log</File>
         <encoder>
             <charset>UTF-8</charset>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%logger{96}:%line] - %X{uuid} - %msg%n</pattern>
+            <pattern>${logPattern}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/${logName}.%d{yyyyMMdd}.error.%i.log.gz</fileNamePattern>
@@ -58,34 +58,12 @@
         </filter>
     </appender>
 
-    <!--异步日志-->
-    <appender name="ASYNC_APPENDER" class="ch.qos.logback.classic.AsyncAppender">
-        <!--<includeCallerData>true</includeCallerData>-->
-        <!-- 更改默认的队列的长度,该值会影响性能.默认值为256 -->
-        <queueSize>512</queueSize>
-        <!-- 添加附加的appender,最多只能添加一个 -->
-        <appender-ref ref="FILE_APPENDER"/>
-    </appender>
+    <root level="${logLevel}">
+        <appender-ref ref="GENERAL_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+        <springProfile name="local | dev">
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
+    </root>
 
-    <!-- 非本地环境配置 -->
-    <springProfile name="!local">
-        <!-- logLevel通过logging.level.root配置，默认为info -->
-        <root level="${logLevel}">
-            <!--<appender-ref ref="STDOUT_APPENDER"/>-->
-            <!-- 开启info日志和error日志，error日志会打印到本地 -->
-            <appender-ref ref="ASYNC_APPENDER"/>
-            <appender-ref ref="ERROR_APPENDER"/>
-        </root>
-    </springProfile>
-
-    <!-- 本地环境配置 -->
-    <springProfile name="dev,local">
-        <!-- logLevel通过logging.level.root配置，默认为info -->
-        <root level="${logLevel}">
-            <!-- 只打印到控制台，不记录到文件中 -->
-            <appender-ref ref="STDOUT_APPENDER"/>
-            <appender-ref ref="ASYNC_APPENDER"/>
-            <appender-ref ref="ERROR_APPENDER"/>
-        </root>
-    </springProfile>
 </configuration>

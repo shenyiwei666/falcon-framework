@@ -8,13 +8,6 @@ import org.springframework.amqp.core.MessagePostProcessor;
 
 import java.util.Map;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/1
- */
 public class RabbitTemplateAdapter implements MessagePostProcessor {
 
     @Override

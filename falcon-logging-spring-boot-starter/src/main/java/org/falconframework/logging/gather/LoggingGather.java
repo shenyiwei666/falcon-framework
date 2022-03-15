@@ -1,23 +1,15 @@
 package org.falconframework.logging.gather;
 
-import org.falconframework.logging.dto.ElkLogging;
-import org.falconframework.logging.enums.GatherEnum;
+import org.falconframework.logging.elk.ElkLogging;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/1
- */
 public interface LoggingGather {
 
     static LoggingGather getInstance(String gather) {
-        GatherEnum gatherEnum = GatherEnum.getByValue(gather);
-        if (gatherEnum == null) {
+        LoggingGatherEnum loggingGatherEnum = LoggingGatherEnum.getByValue(gather);
+        if (loggingGatherEnum == null) {
             return null;
         }
-        return gatherEnum.getInstance();
+        return loggingGatherEnum.getInstance();
     }
 
     void write(ElkLogging elkLogging);

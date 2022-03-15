@@ -5,13 +5,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/9
- */
 public class RabbitTemplateProcessor implements BeanPostProcessor {
 
     @Autowired

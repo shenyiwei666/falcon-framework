@@ -1,16 +1,9 @@
-package org.falconframework.logging.dto;
+package org.falconframework.logging.elk;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * elk日志
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/1/10
- */
 @Data
 public class ElkLogging implements Serializable {
 

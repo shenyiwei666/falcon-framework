@@ -1,9 +1,13 @@
+org.springframework.context.ApplicationListener=\
+  org.falconframework.logging.adapter.application.ApplicationListenerAdapter
+
 org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-    org.falconframework.logging.LoggingContext
+    org.falconframework.logging.config.ConfigReader
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
     org.falconframework.logging.adapter.servlet.ServletAdapterAutoConfiguration,\
     org.falconframework.logging.adapter.rest.RestTemplateAdapterAutoConfiguration,\
     org.falconframework.logging.adapter.feign.FeignAdapterAutoConfiguration,\
     org.falconframework.logging.adapter.rabbit.RabbitAdapterAutoConfiguration,\
-    org.falconframework.logging.aspect.ControllerAspectAutoConfiguration
+    org.falconframework.logging.printer.HttpRequestPrinterAutoConfiguration,\
+    org.falconframework.logging.config.ApolloConfigListenerAutoConfiguration

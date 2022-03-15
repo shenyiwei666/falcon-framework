@@ -2,13 +2,6 @@ package org.falconframework.common.util;
 
 import java.util.Arrays;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/9
- */
 public class ArrayUtil {
 
     public static <T> T[] concat(T[] part1, T...part2) {

@@ -5,13 +5,6 @@ import feign.RequestTemplate;
 import org.falconframework.logging.constant.LoggingConstant;
 import org.slf4j.MDC;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/1
- */
 public class FeignAdapter implements RequestInterceptor {
 
     @Override

@@ -1,15 +1,8 @@
-package org.falconframework.logging.dto;
+package org.falconframework.logging.config;
 
 import lombok.Data;
-import org.falconframework.logging.enums.GatherEnum;
+import org.falconframework.logging.gather.LoggingGatherEnum;
 
-/**
- * 日志配置
- *
- * @author 申益炜
- * @date 2021/12/6
- * @since 1.0.0
- */
 @Data
 public class LoggingConfig {
 
@@ -25,7 +18,7 @@ public class LoggingConfig {
 
     /**
      * 日志采集方式
-     * @see GatherEnum
+     * @see LoggingGatherEnum
      */
     private String gather;
 

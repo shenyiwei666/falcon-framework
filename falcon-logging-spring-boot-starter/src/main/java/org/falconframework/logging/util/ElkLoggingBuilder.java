@@ -4,22 +4,15 @@ import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.falconframework.common.util.NetworkUtil;
+import org.falconframework.logging.config.LoggingConfig;
 import org.falconframework.logging.constant.LoggingConstant;
-import org.falconframework.logging.dto.ElkLogging;
-import org.falconframework.logging.dto.LoggingConfig;
+import org.falconframework.logging.elk.ElkLogging;
 import org.slf4j.MDC;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * 构建ElkLogging
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/11
- */
 public class ElkLoggingBuilder {
 
     public static ElkLogging build(LoggingEvent event, LoggingConfig config) {
@@ -57,7 +50,7 @@ public class ElkLoggingBuilder {
 
     private static String getLoggingBody(LoggingEvent event, String traceId) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(getTime());
+        buffer.append(getTime(event));
         buffer.append(" | " + event.getLevel().toString());
         buffer.append(" | " + getThreadName(event));
         buffer.append(" | " + getLocation(event));
@@ -129,9 +122,9 @@ public class ElkLoggingBuilder {
         return null;
     }
 
-    private static String getTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMdd-HH:mm:ss.SSS");
-        return sdf.format(new Date());
+    private static String getTime(LoggingEvent event) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        return sdf.format(new Date(event.getTimeStamp()));
     }
 
 }

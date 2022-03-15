@@ -6,21 +6,14 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.falconframework.logging.LoggingContext;
-import org.falconframework.logging.dto.ElkLogging;
-import org.falconframework.logging.dto.LoggingConfig;
+import org.falconframework.logging.config.ConfigReader;
+import org.falconframework.logging.elk.ElkLogging;
+import org.falconframework.logging.config.LoggingConfig;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * kafka采集日志
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/1/11
- */
 public class KafkaLoggingGather implements LoggingGather {
 
     private LoggingConfig config;
@@ -52,7 +45,7 @@ public class KafkaLoggingGather implements LoggingGather {
     }
 
     private void initConfig() {
-        this.config = LoggingContext.getLoggingConfig();
+        this.config = ConfigReader.getLoggingConfig();
     }
 
     private void initProducer() {

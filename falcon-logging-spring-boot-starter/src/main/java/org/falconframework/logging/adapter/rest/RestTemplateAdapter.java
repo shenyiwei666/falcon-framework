@@ -10,13 +10,6 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/4
- */
 public class RestTemplateAdapter implements ClientHttpRequestInterceptor {
 
     @Override

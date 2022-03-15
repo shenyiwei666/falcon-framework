@@ -1,16 +1,6 @@
-package org.falconframework.logging.enums;
+package org.falconframework.logging.gather;
 
-import org.falconframework.logging.gather.KafkaLoggingGather;
-import org.falconframework.logging.gather.LoggingGather;
-
-/**
- * 日志采集方式
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/1/10
- */
-public enum GatherEnum {
+public enum LoggingGatherEnum {
 
     /**
      * kafka
@@ -18,7 +8,7 @@ public enum GatherEnum {
     KAFKA("kafka", new KafkaLoggingGather());
 
 
-    GatherEnum(String value, LoggingGather instance) {
+    LoggingGatherEnum(String value, LoggingGather instance) {
         this.value = value;
         this.instance = instance;
     }
@@ -27,11 +17,11 @@ public enum GatherEnum {
 
     private LoggingGather instance;
 
-    public static GatherEnum getByValue(String value) {
+    public static LoggingGatherEnum getByValue(String value) {
         if (value == null) {
             return null;
         }
-        for (GatherEnum e : GatherEnum.values()) {
+        for (LoggingGatherEnum e : LoggingGatherEnum.values()) {
             if (e.getValue().equals(value)) {
                 return e;
             }

@@ -1,12 +1,5 @@
 package org.falconframework.common.enums;
 
-/**
- * boolean枚举
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/08
- */
 public enum BooleanEnum {
 
     /**

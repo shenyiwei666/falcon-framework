@@ -1,73 +1,49 @@
-package org.falconframework.logging.aspect;
+package org.falconframework.logging.printer;
 
 import com.alibaba.fastjson.JSON;
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.falconframework.common.util.NetworkUtil;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/10
- */
-@Slf4j
-@Aspect
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class ControllerAspect {
+public class ParamConverter {
 
-    @Order(Ordered.HIGHEST_PRECEDENCE)
-    @Around("@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController)")
-    public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
-        HttpServletRequest request = NetworkUtil.getHttpServletRequest();
-        String uri = request.getRequestURI();
-        printRequestParam(uri, joinPoint);
-        Object returnResult = joinPoint.proceed();
-        printResponseParam(uri, returnResult);
-        return returnResult;
+    public static String formatArrayParam(Object[] params) {
+        Map map = new HashMap();
+        for (int i = 0; i < params.length; i++) {
+            String paramKey = "arg" + (i + 1);
+            String paramValue = ParamConverter.convertString(params[i]);
+            if (paramValue == null) {
+                continue;
+            }
+            map.put(paramKey, paramValue);
+        }
+        return JSON.toJSONString(map, true);
     }
 
-    private void printRequestParam(String uri, ProceedingJoinPoint joinPoint) {
-        String param = getRequestParam(joinPoint);
-        log.info("{}入参: {}", uri, param);
-    }
-
-    private void printResponseParam(String uri, Object returnResult) {
-        String param = JSON.toJSONString(returnResult);
-        log.info("{}出参: {}", uri, param);
-    }
-
-    private String getRequestParam(ProceedingJoinPoint joinPoint) {
-        Object[] params = joinPoint.getArgs();
+    public static String formatArrayParam2(Object[] params) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < params.length; i++) {
             String paramKey = "arg" + (i + 1);
-            String paramValue = convertString(params[i]);
+            String paramValue = ParamConverter.convertString(params[i]);
             if (paramValue == null) {
                 continue;
             }
             if (sb.length() > 0) {
-                sb.append(", ");
+                sb.append("\n");
             }
             sb.append(paramKey + " = " + paramValue);
         }
         return sb.toString();
     }
 
-    private static String convertString(Object param) {
+    public static String convertString(Object param) {
         if (param instanceof ServletRequest || param instanceof ServletResponse || param instanceof MultipartFile) {
             return null;
         }

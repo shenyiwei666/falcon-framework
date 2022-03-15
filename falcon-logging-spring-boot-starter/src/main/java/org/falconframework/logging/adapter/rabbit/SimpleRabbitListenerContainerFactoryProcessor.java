@@ -6,14 +6,9 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
-/**
- * 功能说明
- *
- * @author 申益炜
- * @version 1.0.0
- * @date 2022/3/9
- */
+@ConditionalOnClass({SimpleRabbitListenerContainerFactory.class})
 public class SimpleRabbitListenerContainerFactoryProcessor implements BeanPostProcessor {
 
     @Autowired
