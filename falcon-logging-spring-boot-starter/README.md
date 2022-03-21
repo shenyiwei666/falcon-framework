@@ -16,18 +16,20 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 3. 运行项目产生日志后就可以到kibana里面查询日志了，查询前要先创建索引模式，关于kibana的使用方法百度下
 
 ######添加配置
-    spring.application.name=falcon-logging-demo // 应用名
-	spring.profiles.active=local // 环境
-	logging.falcon.gather=kafka // 把日志发送到kafka，不配置不发送
-	logging.falcon.kafka.servers=localhost:9092 // kafka地址
-	logging.falcon.kafka.topic=topic-logging // 把日志发送到这个topic
-	logging.falcon.kafka.acks=0 // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.retries=1 // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.compressionType=gzip // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.bufferMemory=33554432 // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.lingerMs=0 // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.maxRequestSize=1048576 // kafka的Producer参数，参看官方文档，根据自己需要配置
-	logging.falcon.kafka.requestTimeoutMs=30000 // kafka的Producer参数，参看官方文档，根据自己需要配置
+	spring.profiles.active=local // 必选，环境    
+	spring.application.name=falcon-logging-demo // 必选，应用名
+	logging.falcon.searchIndex=falcon // 可选，es索引，如果为空则按spring.application.name创建索引
+	logging.falcon.console=true // 可选，是否需要在控制台输出日志（boolean值）
+	logging.falcon.gather=kafka // 可选，把日志发送到kafka，不配置不发送
+	logging.falcon.kafka.servers=localhost:9092 // 必选，kafka地址
+	logging.falcon.kafka.topic=topic-logging // 必选，把日志发送到这个topic
+	logging.falcon.kafka.acks=0 // 可选，kafka的Producer参数
+	logging.falcon.kafka.retries=1 // 可选，kafka的Producer参数
+	logging.falcon.kafka.compressionType=gzip // 可选，kafka的Producer参数
+	logging.falcon.kafka.bufferMemory=33554432 // 可选，kafka的Producer参数
+	logging.falcon.kafka.lingerMs=0 // 可选，kafka的Producer参数
+	logging.falcon.kafka.maxRequestSize=1048576 // 可选，kafka的Producer参数
+	logging.falcon.kafka.requestTimeoutMs=30000 // 可选，kafka的Producer参数
 
 ## 常见问题
 ###### 主线程的traceId怎么传递到子线程？

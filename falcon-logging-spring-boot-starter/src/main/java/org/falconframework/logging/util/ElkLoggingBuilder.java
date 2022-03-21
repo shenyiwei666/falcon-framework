@@ -18,12 +18,14 @@ public class ElkLoggingBuilder {
     public static ElkLogging build(LoggingEvent event, LoggingConfig config) {
         String traceId = getTraceId(event);
         String body = getLoggingBody(event, traceId);
+        String searchIndex = StringUtils.isBlank(config.getSearchIndex()) ? config.getApp() : config.getSearchIndex();
 
         ElkLogging elkLogging = new ElkLogging();
         elkLogging.setBody(body);
         elkLogging.setLevel(event.getLevel().toString());
         elkLogging.setTraceId(traceId);
         elkLogging.setApp(config.getApp());
+        elkLogging.setSearchIndex(searchIndex);
         elkLogging.setEnv(config.getEnv());
         elkLogging.setIp(NetworkUtil.getLocalIP());
         return elkLogging;

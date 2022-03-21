@@ -19,11 +19,11 @@ public class KafkaLoggingGather implements LoggingGather {
     private LoggingConfig config;
     private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private KafkaProducer<String, String> producer;
-    private boolean isStarted = false;
+    private boolean started = false;
 
     @Override
     public void write(ElkLogging elkLogging) {
-        if (!this.isStarted) {
+        if (!this.started) {
             start();
         }
         String message = JSON.toJSONString(elkLogging);
@@ -35,13 +35,13 @@ public class KafkaLoggingGather implements LoggingGather {
     }
 
     private synchronized void start() {
-        if (this.isStarted) {
+        if (this.started) {
             return;
         }
         initConfig();
         initProducer();
         startSender();
-        this.isStarted = true;
+        this.started = true;
     }
 
     private void initConfig() {
@@ -81,6 +81,7 @@ public class KafkaLoggingGather implements LoggingGather {
         String topic = this.config.getKafka().getTopic();
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, message);
         this.producer.send(producerRecord, (RecordMetadata metadata, Exception exception) -> {
+//            System.out.println("send kafka ---> " + JSON.parseObject(message, ElkLogging.class).getBody());
             if (exception != null) {
                 processSendError(message, metadata, exception);
             }

@@ -38,7 +38,9 @@ public class ApplicationListenerAdapter implements SmartApplicationListener {
     }
 
     private void initLoggingMdc() {
-        MDC.put(LoggingConstant.TRACE_ID, TraceIdGenerator.generate());
+        if (MDC.get(LoggingConstant.TRACE_ID) == null) {
+            MDC.put(LoggingConstant.TRACE_ID, TraceIdGenerator.generate());
+        }
     }
 
 }

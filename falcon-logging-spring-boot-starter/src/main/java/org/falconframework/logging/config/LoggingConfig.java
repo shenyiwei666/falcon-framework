@@ -12,12 +12,23 @@ public class LoggingConfig {
     private String app;
 
     /**
+     * es索引，如果为空则按app创建索引
+     */
+    private String searchIndex;
+
+    /**
      * 当前环境
      */
     private String env;
 
     /**
+     * 是否需要在控制台输出日志（boolean值）
+     */
+    private Boolean console;
+
+    /**
      * 日志采集方式
+     *
      * @see LoggingGatherEnum
      */
     private String gather;
@@ -56,7 +67,7 @@ public class LoggingConfig {
         private String compressionType;
 
         /**
-         *  producer缓冲区大小，单位是字节，默认为33554432字节（32MB）
+         * producer缓冲区大小，单位是字节，默认为33554432字节（32MB）
          */
         private Integer bufferMemory;
 

@@ -23,9 +23,14 @@ public class ElkLogging implements Serializable {
     private String traceId;
 
     /**
-     * 应用程序名称
+     * 应用名称
      */
     private String app;
+
+    /**
+     * es索引，如果为空则按app创建索引
+     */
+    private String searchIndex;
 
     /**
      * 当前环境

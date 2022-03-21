@@ -1,6 +1,5 @@
 package org.falconframework.logging.config;
 
-import com.alibaba.fastjson.JSON;
 import org.falconframework.logging.util.LoggingConfigBuilder;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
 import org.springframework.core.env.Environment;
@@ -11,8 +10,7 @@ public class ConfigReader implements PropertySourceLocator {
     private static LoggingConfig loggingConfig;
 
     public static LoggingConfig getLoggingConfig() {
-        // 返回副本
-        return JSON.parseObject(JSON.toJSONString(loggingConfig), LoggingConfig.class);
+        return loggingConfig;
     }
 
     @Override

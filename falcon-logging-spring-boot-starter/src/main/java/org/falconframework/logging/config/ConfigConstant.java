@@ -5,29 +5,39 @@ import org.falconframework.logging.gather.LoggingGatherEnum;
 public class ConfigConstant {
 
     /**
-     * 配置：应用名称
-     */
-    public final static String APP = "spring.application.name";
-
-    /**
-     * 配置：运行环境
+     * 运行环境
      */
     public final static String ENV = "spring.profiles.active";
 
     /**
-     * 配置：日志采集方式
+     * 应用名称
+     */
+    public final static String APP = "spring.application.name";
+
+    /**
+     * es索引，如果为空则按app创建索引
+     */
+    public final static String SEARCH_INDEX = "logging.falcon.searchIndex";
+
+    /**
+     * 是否需要在控制台输出日志（boolean值）
+     */
+    public final static String CONSOLE = "logging.falcon.console";
+
+    /**
+     * 日志采集方式
      *
      * @see LoggingGatherEnum
      */
     public final static String GATHER = "logging.falcon.gather";
 
     /**
-     * 配置：kafka服务器地址
+     * kafka服务器地址
      */
     public final static String KAFKA_SERVERS = "logging.falcon.kafka.servers";
 
     /**
-     * 配置：kafka日志topic
+     * kafka日志topic
      */
     public final static String KAFKA_TOPIC = "logging.falcon.kafka.topic";
 

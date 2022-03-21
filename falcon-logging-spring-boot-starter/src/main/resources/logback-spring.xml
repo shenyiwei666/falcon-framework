@@ -2,44 +2,20 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd">
 
-    <springProperty name="logLevel" defaultValue="INFO" source="logback.level" scope="context" />
+    <springProperty name="logLevel" source="logback.level" defaultValue="INFO" scope="context" />
     <springProperty name="logName" source="spring.application.name" defaultValue="falcon" scope="context" />
     <property name="logPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} | %level | %thread | %logger{36}:%line | %X{X-B3-TraceId} | %msg%n" />
 
     <contextName>${logName}</contextName>
 
-    <!-- 控制台 -->
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="CLOUD" class="org.falconframework.logging.CloudAppender">
         <encoder>
             <charset>UTF-8</charset>
             <pattern>${logPattern}</pattern>
         </encoder>
     </appender>
 
-    <!-- INFO 文件 -->
-    <appender name="GENERAL_FILE" class="org.falconframework.logging.LoggingAppender">
-        <File>logs/${logName}.log</File>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>${logPattern}</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/${logName}.%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>512MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <!--忽略ERROR日志-->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>NEUTRAL</onMismatch>
-        </filter>
-    </appender>
-
-    <!-- ERROR 文件 -->
-    <appender name="ERROR_FILE" class="org.falconframework.logging.LoggingAppender">
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>logs/${logName}.error.log</File>
         <encoder>
             <charset>UTF-8</charset>
@@ -59,11 +35,8 @@
     </appender>
 
     <root level="${logLevel}">
-        <appender-ref ref="GENERAL_FILE"/>
+        <appender-ref ref="CLOUD"/>
         <appender-ref ref="ERROR_FILE"/>
-        <springProfile name="local | dev">
-            <appender-ref ref="STDOUT"/>
-        </springProfile>
     </root>
 
 </configuration>
