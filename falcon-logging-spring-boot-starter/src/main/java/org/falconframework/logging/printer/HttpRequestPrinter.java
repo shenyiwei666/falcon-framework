@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.falconframework.common.util.NetworkUtil;
+import org.falconframework.logging.annotation.IgnoreLogging;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +27,15 @@ public class HttpRequestPrinter {
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         HttpServletRequest request = NetworkUtil.getHttpServletRequest();
         String uri = request.getRequestURI();
-        printRequestParam(uri, joinPoint);
+        IgnoreLogging ignoreLogging = getIgnoreLogAnnotation(joinPoint);
+
+        if (ignoreLogging == null || !ignoreLogging.request()) {
+            printRequestParam(uri, joinPoint);
+        }
         Object returnResult = joinPoint.proceed();
-        printResponseParam(uri, returnResult);
+        if (ignoreLogging == null || !ignoreLogging.response()) {
+            printResponseParam(uri, returnResult);
+        }
         return returnResult;
     }
 
@@ -50,6 +59,12 @@ public class HttpRequestPrinter {
     private void printResponseParam(String uri, Object returnResult) {
         String param = JSON.toJSONString(returnResult, true);
         log.info("http[{}]出参: \nParam: {}", uri, param);
+    }
+
+    private IgnoreLogging getIgnoreLogAnnotation(ProceedingJoinPoint joinPoint) {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method method = methodSignature.getMethod();
+        return method.getAnnotation(IgnoreLogging.class);
     }
 
 }

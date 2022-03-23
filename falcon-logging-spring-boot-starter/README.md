@@ -6,7 +6,7 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 ##我做了什么
 1. 把每次写入的日志都加上traceId，方便查询全链路日志
 2. 把写入的日志发送到kafka，然后通过ELK处理查询日志
-3. 对所有controller都记录入参和出参日志，每个请求生成1个traceId
+3. 对所有controller接口和dubbo接口都记录入参和出参日志，每个请求生成1个traceId
 4. 服务间调用时传递traceId，目前支持的方式有RestTemplate、Feign、Dubbo
 5. MQ生产者的traceId传递到消费者，目前支持的MQ有RabbitMQ
 
@@ -18,11 +18,13 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 ######添加配置
 	spring.profiles.active=local // 必选，环境    
 	spring.application.name=falcon-logging-demo // 必选，应用名
-	logging.falcon.searchIndex=falcon // 可选，es索引，如果为空则按spring.application.name创建索引
-	logging.falcon.console=true // 可选，是否需要在控制台输出日志（boolean值）
-	logging.falcon.gather=kafka // 可选，把日志发送到kafka，不配置不发送
 	logging.falcon.kafka.servers=localhost:9092 // 必选，kafka地址
 	logging.falcon.kafka.topic=topic-logging // 必选，把日志发送到这个topic
+
+	logging.falcon.console=true // 可选，是否需要在控制台输出日志，values[true, false]，默认false
+    logging.falcon.debug=true // 可选，是否开启调试模式志，values[true, false]，默认false
+	logging.falcon.searchIndex=falcon // 可选，es索引，如果为空则按spring.application.name创建索引
+    logging.falcon.gather=kafka // 可选，日志采集方式，默认kafka
 	logging.falcon.kafka.acks=0 // 可选，kafka的Producer参数
 	logging.falcon.kafka.retries=1 // 可选，kafka的Producer参数
 	logging.falcon.kafka.compressionType=gzip // 可选，kafka的Producer参数
@@ -32,7 +34,7 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 	logging.falcon.kafka.requestTimeoutMs=30000 // 可选，kafka的Producer参数
 
 ## 常见问题
-###### 主线程的traceId怎么传递到子线程？
+##### 主线程的traceId怎么传递到子线程？
     // 使用MdcRunnable将主线程中的MDC信息传递到子线程，这样子线程输入的日志就会带上主线程的traceId
     threadPool.execute(new MdcRunnable() {
         @Override
@@ -40,6 +42,15 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
             log.info("子线程第1次日志");
         }
     });
+
+#####怎么设置某个接口不打印入参出参日志？
+1、spring在controller的方法上增加@IgnoreLog注解。<br/>
+2、dubbo在provider的方法上增加@IgnoreLog注解（要加到接口上，不能加到实现类上）。
+
+####性能压测时会产生大量日志导致topic积压，影响其它业务查询日志，如何让压测的请求不打印日志？
+1、服务添加配置logging.falcon.debug=true。<br/>
+2、在压测的请求Header头加上X-Logging-Ignore=true。
+
 
 <br/><br/><br/>
 ## ELK搭建

@@ -22,9 +22,14 @@ public class LoggingConfig {
     private String env;
 
     /**
-     * 是否需要在控制台输出日志（boolean值）
+     * 是否需要在控制台输出日志，values[true, false]
      */
     private Boolean console;
+
+    /**
+     * 是否开启调试模式志，values[true, false]
+     */
+    private Boolean debug;
 
     /**
      * 日志采集方式

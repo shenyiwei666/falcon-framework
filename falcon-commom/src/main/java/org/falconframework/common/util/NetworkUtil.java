@@ -39,7 +39,7 @@ public class NetworkUtil {
                 }
             }
         } catch (Exception e) {
-            System.err.println("本机IP地址获取失败：" + e.getMessage());
+            log.warn("本机IP地址获取失败", e);
         }
         return "";
     }

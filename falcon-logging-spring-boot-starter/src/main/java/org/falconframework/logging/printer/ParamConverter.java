@@ -1,7 +1,6 @@
 package org.falconframework.logging.printer;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
@@ -25,22 +24,6 @@ public class ParamConverter {
             map.put(paramKey, paramValue);
         }
         return JSON.toJSONString(map, true);
-    }
-
-    public static String formatArrayParam2(Object[] params) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < params.length; i++) {
-            String paramKey = "arg" + (i + 1);
-            String paramValue = ParamConverter.convertString(params[i]);
-            if (paramValue == null) {
-                continue;
-            }
-            if (sb.length() > 0) {
-                sb.append("\n");
-            }
-            sb.append(paramKey + " = " + paramValue);
-        }
-        return sb.toString();
     }
 
     public static String convertString(Object param) {

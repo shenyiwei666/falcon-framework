@@ -1,6 +1,7 @@
 package org.falconframework.logging.gather;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@Slf4j
 public class KafkaLoggingGather implements LoggingGather {
 
     private LoggingConfig config;
@@ -81,7 +83,7 @@ public class KafkaLoggingGather implements LoggingGather {
         String topic = this.config.getKafka().getTopic();
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, message);
         this.producer.send(producerRecord, (RecordMetadata metadata, Exception exception) -> {
-//            System.out.println("send kafka ---> " + JSON.parseObject(message, ElkLogging.class).getBody());
+//            System.out.println("\nsend kafka ---> " + JSON.parseObject(message, ElkLogging.class).getBody());
             if (exception != null) {
                 processSendError(message, metadata, exception);
             }
@@ -98,8 +100,7 @@ public class KafkaLoggingGather implements LoggingGather {
     }
 
     private void processSendError(String message, RecordMetadata metadata, Exception e) {
-        System.out.println("日志发送kafka失败：" + message);
-        e.printStackTrace();
+        log.error("日志发送kafka失败，message={}，metadata={}" + message, JSON.toJSONString(metadata), e);
     }
 
 }

@@ -20,9 +20,14 @@ public class ConfigConstant {
     public final static String SEARCH_INDEX = "logging.falcon.searchIndex";
 
     /**
-     * 是否需要在控制台输出日志（boolean值）
+     * 是否需要在控制台输出日志，values[true, false]
      */
     public final static String CONSOLE = "logging.falcon.console";
+
+    /**
+     * 是否开启调试模式志，values[true, false]
+     */
+    public final static String DEBUG = "logging.falcon.debug";
 
     /**
      * 日志采集方式

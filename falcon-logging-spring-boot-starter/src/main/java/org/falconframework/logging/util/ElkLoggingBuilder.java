@@ -5,7 +5,7 @@ import ch.qos.logback.classic.spi.LoggingEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.falconframework.common.util.NetworkUtil;
 import org.falconframework.logging.config.LoggingConfig;
-import org.falconframework.logging.constant.LoggingConstant;
+import org.falconframework.logging.config.HeaderConstant;
 import org.falconframework.logging.elk.ElkLogging;
 import org.slf4j.MDC;
 
@@ -36,16 +36,16 @@ public class ElkLoggingBuilder {
 
         Map<String, String> propertyMap = event.getMDCPropertyMap();
         if (propertyMap != null) {
-            traceId = propertyMap.get(LoggingConstant.TRACE_ID);
+            traceId = propertyMap.get(HeaderConstant.TRACE_ID);
         }
 
         if (traceId == null) {
-            traceId = MDC.get(LoggingConstant.TRACE_ID);
+            traceId = MDC.get(HeaderConstant.TRACE_ID);
         }
 
         if (traceId == null) {
             traceId = TraceIdGenerator.generate();
-            MDC.put(LoggingConstant.TRACE_ID, traceId);
+            MDC.put(HeaderConstant.TRACE_ID, traceId);
         }
         return traceId;
     }

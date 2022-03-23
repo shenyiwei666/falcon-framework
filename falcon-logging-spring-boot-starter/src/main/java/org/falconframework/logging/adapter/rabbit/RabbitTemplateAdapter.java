@@ -1,6 +1,6 @@
 package org.falconframework.logging.adapter.rabbit;
 
-import org.falconframework.logging.constant.LoggingConstant;
+import org.falconframework.logging.config.HeaderConstant;
 import org.slf4j.MDC;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
@@ -18,7 +18,8 @@ public class RabbitTemplateAdapter implements MessagePostProcessor {
 
     private void initLoggingMdc(Message message) {
         Map<String, Object> headers = message.getMessageProperties().getHeaders();
-        headers.put(LoggingConstant.TRACE_ID, MDC.get(LoggingConstant.TRACE_ID));
+        headers.put(HeaderConstant.TRACE_ID, MDC.get(HeaderConstant.TRACE_ID));
+        headers.put(HeaderConstant.LOGGING_IGNORE, MDC.get(HeaderConstant.LOGGING_IGNORE));
     }
 
 }

@@ -3,7 +3,7 @@ package org.falconframework.logging.adapter.dubbo;
 import org.apache.dubbo.common.constants.CommonConstants;
 import org.apache.dubbo.common.extension.Activate;
 import org.apache.dubbo.rpc.*;
-import org.falconframework.logging.constant.LoggingConstant;
+import org.falconframework.logging.config.HeaderConstant;
 import org.slf4j.MDC;
 import org.springframework.core.Ordered;
 
@@ -21,11 +21,13 @@ public class DubboProviderAdapter implements Filter {
     }
 
     private void initLoggingMdc(Invocation invocation) {
-        MDC.put(LoggingConstant.TRACE_ID, invocation.getAttachment(LoggingConstant.TRACE_ID));
+        MDC.put(HeaderConstant.TRACE_ID, invocation.getAttachment(HeaderConstant.TRACE_ID));
+        MDC.put(HeaderConstant.LOGGING_IGNORE, invocation.getAttachment(HeaderConstant.LOGGING_IGNORE));
     }
 
     private void clearLoggingMdc() {
-        MDC.remove(LoggingConstant.TRACE_ID);
+        MDC.remove(HeaderConstant.TRACE_ID);
+        MDC.remove(HeaderConstant.LOGGING_IGNORE);
     }
 
 }

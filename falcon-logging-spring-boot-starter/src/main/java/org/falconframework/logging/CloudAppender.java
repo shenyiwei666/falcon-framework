@@ -2,12 +2,15 @@ package org.falconframework.logging;
 
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
+import org.falconframework.common.enums.BooleanEnum;
 import org.falconframework.logging.config.ConfigReader;
 import org.falconframework.logging.config.LoggingConfig;
+import org.falconframework.logging.config.HeaderConstant;
 import org.falconframework.logging.elk.ElkLogging;
 import org.falconframework.logging.gather.LoggingGather;
 import org.falconframework.logging.util.ElkLoggingBuilder;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CloudAppender<E> extends ConsoleAppender<E> {
@@ -27,11 +30,16 @@ public class CloudAppender<E> extends ConsoleAppender<E> {
             delayQueue.add(event);
             return;
         }
-        appendGather(event, config);
+        String loggingIgnore = getMdcPropertyValue(event, HeaderConstant.LOGGING_IGNORE);
+        // 开启了调试模式，并且请求的header参数中指定了不打印日志
+        if (config.getDebug() && BooleanEnum.isTrue(loggingIgnore)) {
+            return;
+        }
+        appendCloud(event, config);
         appendConsole(event, config);
     }
 
-    private void appendGather(E event, LoggingConfig config) {
+    private void appendCloud(E event, LoggingConfig config) {
         LoggingGather loggingGather = LoggingGather.getInstance(config.getGather());
         if (loggingGather == null) {
             return;
@@ -45,6 +53,14 @@ public class CloudAppender<E> extends ConsoleAppender<E> {
         if (config.getConsole()) {
             super.append(event);
         }
+    }
+
+    private String getMdcPropertyValue(E event, String mdcPropertyKey) {
+        Map<String, String> mdcPropertyMap = ((LoggingEvent) event).getMDCPropertyMap();
+        if (mdcPropertyMap != null) {
+            return mdcPropertyMap.get(mdcPropertyKey);
+        }
+        return null;
     }
 
     private void processDelayAppend() {

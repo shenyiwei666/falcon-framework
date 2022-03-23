@@ -13,8 +13,9 @@ public class LoggingConfigBuilder {
         String app = getString(environment, ConfigConstant.APP, true, null);
         String searchIndex = getString(environment, ConfigConstant.SEARCH_INDEX, false, null);
         String env = getString(environment, ConfigConstant.ENV, true, null);
-        String gather = getString(environment, ConfigConstant.GATHER, true, null);
+        String gather = getString(environment, ConfigConstant.GATHER, true, "kafka");
         Boolean console = getBoolean(environment, ConfigConstant.CONSOLE, true, "false");
+        Boolean debug = getBoolean(environment, ConfigConstant.DEBUG, true, "false");
 
         LoggingConfig.KafkaConfig kafka = loadKafkaConfig(environment);
         LoggingConfig loggingConfig = new LoggingConfig();
@@ -23,6 +24,7 @@ public class LoggingConfigBuilder {
         loggingConfig.setEnv(env);
         loggingConfig.setGather(gather);
         loggingConfig.setConsole(console);
+        loggingConfig.setDebug(debug);
         loggingConfig.setKafka(kafka);
         return loggingConfig;
     }
