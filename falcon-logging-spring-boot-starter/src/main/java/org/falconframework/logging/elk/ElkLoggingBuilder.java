@@ -1,14 +1,15 @@
-package org.falconframework.logging.util;
+package org.falconframework.logging.elk;
 
 import ch.qos.logback.classic.pattern.ThrowableProxyConverter;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.falconframework.common.util.NetworkUtil;
 import org.falconframework.logging.config.LoggingConfig;
-import org.falconframework.logging.config.HeaderConstant;
-import org.falconframework.logging.elk.ElkLogging;
+import org.falconframework.logging.constant.LoggingConstant;
+import org.falconframework.logging.util.TraceIdGenerator;
 import org.slf4j.MDC;
 
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -31,21 +32,31 @@ public class ElkLoggingBuilder {
         return elkLogging;
     }
 
+    public static String getSign(LoggingEvent event) {
+        String shortClassName = getShortClassName(event.getLoggerName());
+        String lineNumber = getLineNumber(event);
+        String exceptionClass = "none";
+        if (event.getThrowableProxy() != null) {
+            exceptionClass = getShortClassName(event.getThrowableProxy().getClassName());
+        }
+        return MessageFormat.format("{0}.{1}.{2}", shortClassName, lineNumber, exceptionClass);
+    }
+
     private static String getTraceId(LoggingEvent event) {
         String traceId = null;
 
         Map<String, String> propertyMap = event.getMDCPropertyMap();
         if (propertyMap != null) {
-            traceId = propertyMap.get(HeaderConstant.TRACE_ID);
+            traceId = propertyMap.get(LoggingConstant.TRACE_ID);
         }
 
         if (traceId == null) {
-            traceId = MDC.get(HeaderConstant.TRACE_ID);
+            traceId = MDC.get(LoggingConstant.TRACE_ID);
         }
 
         if (traceId == null) {
             traceId = TraceIdGenerator.generate();
-            MDC.put(HeaderConstant.TRACE_ID, traceId);
+            MDC.put(LoggingConstant.TRACE_ID, traceId);
         }
         return traceId;
     }

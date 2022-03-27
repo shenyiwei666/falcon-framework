@@ -10,8 +10,8 @@ package org.falconframework.common.constant;
 public class FalconConstant {
 
     /**
-     * 分隔符
+     * 数组分隔符
      */
-    public final static String SPLIT = ",";
+    public final static String ARRAY_SPLIT = ",";
 
 }

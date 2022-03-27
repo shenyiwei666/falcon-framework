@@ -2,7 +2,7 @@ package org.falconframework.logging.adapter.feign;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.falconframework.logging.config.HeaderConstant;
+import org.falconframework.logging.constant.LoggingConstant;
 import org.slf4j.MDC;
 
 public class FeignAdapter implements RequestInterceptor {
@@ -13,8 +13,8 @@ public class FeignAdapter implements RequestInterceptor {
     }
 
     private void initLoggingMdc(RequestTemplate requestTemplate) {
-        requestTemplate.header(HeaderConstant.TRACE_ID, MDC.get(HeaderConstant.TRACE_ID));
-        requestTemplate.header(HeaderConstant.LOGGING_IGNORE, MDC.get(HeaderConstant.LOGGING_IGNORE));
+        requestTemplate.header(LoggingConstant.TRACE_ID, MDC.get(LoggingConstant.TRACE_ID));
+        requestTemplate.header(LoggingConstant.LOGGING_IGNORE, MDC.get(LoggingConstant.LOGGING_IGNORE));
     }
 
 }

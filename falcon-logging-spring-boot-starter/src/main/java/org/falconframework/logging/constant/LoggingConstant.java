@@ -1,6 +1,6 @@
-package org.falconframework.logging.config;
+package org.falconframework.logging.constant;
 
-public class HeaderConstant {
+public class LoggingConstant {
     /**
      * 日志链路id
      */

@@ -1,14 +1,16 @@
 package org.falconframework.logging;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import org.falconframework.common.enums.BooleanEnum;
+import org.falconframework.logging.alarm.ErrorAlarm;
 import org.falconframework.logging.config.ConfigReader;
 import org.falconframework.logging.config.LoggingConfig;
-import org.falconframework.logging.config.HeaderConstant;
+import org.falconframework.logging.constant.LoggingConstant;
 import org.falconframework.logging.elk.ElkLogging;
-import org.falconframework.logging.gather.LoggingGather;
-import org.falconframework.logging.util.ElkLoggingBuilder;
+import org.falconframework.logging.elk.ElkLoggingBuilder;
+import org.falconframework.logging.elk.KafkaGather;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -17,10 +19,16 @@ public class CloudAppender<E> extends ConsoleAppender<E> {
 
     private static ConcurrentLinkedQueue delayQueue = new ConcurrentLinkedQueue();
 
+    private KafkaGather kafkaGather = new KafkaGather();
+
     @Override
     protected void append(E event) {
-        processAppend(event);
-        processDelayAppend();
+        try {
+            processAppend(event);
+            processDelayAppend();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void processAppend(E event) {
@@ -30,28 +38,24 @@ public class CloudAppender<E> extends ConsoleAppender<E> {
             delayQueue.add(event);
             return;
         }
-        String loggingIgnore = getMdcPropertyValue(event, HeaderConstant.LOGGING_IGNORE);
+
+        String loggingIgnore = getMdcPropertyValue(event, LoggingConstant.LOGGING_IGNORE);
         // 开启了调试模式，并且请求的header参数中指定了不打印日志
         if (config.getDebug() && BooleanEnum.isTrue(loggingIgnore)) {
             return;
         }
-        appendCloud(event, config);
-        appendConsole(event, config);
-    }
 
-    private void appendCloud(E event, LoggingConfig config) {
-        LoggingGather loggingGather = LoggingGather.getInstance(config.getGather());
-        if (loggingGather == null) {
-            return;
-        }
-        LoggingEvent loggingEvent = (LoggingEvent) event;
-        ElkLogging elkLogging = ElkLoggingBuilder.build(loggingEvent, config);
-        loggingGather.write(elkLogging);
-    }
-
-    private void appendConsole(E event, LoggingConfig config) {
         if (config.getConsole()) {
             super.append(event);
+        }
+
+        LoggingEvent loggingEvent = (LoggingEvent) event;
+        ElkLogging elkLogging = ElkLoggingBuilder.build(loggingEvent, config);
+        kafkaGather.write(elkLogging);
+
+        if (Level.ERROR.levelStr.equals(elkLogging.getLevel())) {
+            String sign = ElkLoggingBuilder.getSign(loggingEvent);
+            ErrorAlarm.alarm(elkLogging.getBody(), sign);
         }
     }
 

@@ -61,6 +61,7 @@
         <slf4j-api.version>1.7.28</slf4j-api.version>
         <junit.version>4.12</junit.version>
         <mockito-al.version>1.9.5</mockito-al.version>
+        <mail.version>1.4.4</mail.version>
     </properties>
 
     <dependencyManagement>
@@ -382,6 +383,11 @@
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito-al.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -1,6 +1,6 @@
 package org.falconframework.logging.adapter.application;
 
-import org.falconframework.logging.config.HeaderConstant;
+import org.falconframework.logging.constant.LoggingConstant;
 import org.falconframework.logging.util.TraceIdGenerator;
 import org.slf4j.MDC;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -38,8 +38,8 @@ public class ApplicationListenerAdapter implements SmartApplicationListener {
     }
 
     private void initLoggingMdc() {
-        if (MDC.get(HeaderConstant.TRACE_ID) == null) {
-            MDC.put(HeaderConstant.TRACE_ID, TraceIdGenerator.generate());
+        if (MDC.get(LoggingConstant.TRACE_ID) == null) {
+            MDC.put(LoggingConstant.TRACE_ID, TraceIdGenerator.generate());
         }
     }
 

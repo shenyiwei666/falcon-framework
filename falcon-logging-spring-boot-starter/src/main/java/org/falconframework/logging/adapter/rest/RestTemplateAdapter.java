@@ -1,6 +1,6 @@
 package org.falconframework.logging.adapter.rest;
 
-import org.falconframework.logging.config.HeaderConstant;
+import org.falconframework.logging.constant.LoggingConstant;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -20,8 +20,8 @@ public class RestTemplateAdapter implements ClientHttpRequestInterceptor {
 
     private void initLoggingMdc(HttpRequest request) {
         HttpHeaders headers = request.getHeaders();
-        headers.add(HeaderConstant.TRACE_ID, MDC.get(HeaderConstant.TRACE_ID));
-        headers.add(HeaderConstant.LOGGING_IGNORE, MDC.get(HeaderConstant.LOGGING_IGNORE));
+        headers.add(LoggingConstant.TRACE_ID, MDC.get(LoggingConstant.TRACE_ID));
+        headers.add(LoggingConstant.LOGGING_IGNORE, MDC.get(LoggingConstant.LOGGING_IGNORE));
     }
 
 }

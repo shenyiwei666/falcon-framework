@@ -1,14 +1,14 @@
-package org.falconframework.logging.gather;
+package org.falconframework.logging.elk;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.falconframework.logging.config.ConfigReader;
-import org.falconframework.logging.elk.ElkLogging;
 import org.falconframework.logging.config.LoggingConfig;
 
 import java.util.HashMap;
@@ -16,14 +16,13 @@ import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
-public class KafkaLoggingGather implements LoggingGather {
+public class KafkaGather {
 
     private LoggingConfig config;
     private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
     private KafkaProducer<String, String> producer;
     private boolean started = false;
 
-    @Override
     public void write(ElkLogging elkLogging) {
         if (!this.started) {
             start();
@@ -33,7 +32,9 @@ public class KafkaLoggingGather implements LoggingGather {
     }
 
     private void write(String message) {
-        this.queue.offer(message);
+        if (StringUtils.isNotBlank(message)) {
+            this.queue.offer(message);
+        }
     }
 
     private synchronized void start() {
@@ -51,17 +52,17 @@ public class KafkaLoggingGather implements LoggingGather {
     }
 
     private void initProducer() {
-        LoggingConfig.KafkaConfig kafkaConfig = config.getKafka();
+        LoggingConfig.Kafka kafka = config.getKafka();
         Map<String, Object> producerConfig = new HashMap();
-        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getServers());
-        producerConfig.put(ProducerConfig.ACKS_CONFIG, kafkaConfig.getAcks());
-        producerConfig.put(ProducerConfig.RETRIES_CONFIG, kafkaConfig.getRetries());
-        producerConfig.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, kafkaConfig.getCompressionType());
-        producerConfig.put(ProducerConfig.BUFFER_MEMORY_CONFIG, kafkaConfig.getBufferMemory());
-        producerConfig.put(ProducerConfig.BATCH_SIZE_CONFIG, kafkaConfig.getBatchSize());
-        producerConfig.put(ProducerConfig.LINGER_MS_CONFIG, kafkaConfig.getLingerMs());
-        producerConfig.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, kafkaConfig.getMaxRequestSize());
-        producerConfig.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, kafkaConfig.getRequestTimeoutMs());
+        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafka.getServers());
+        producerConfig.put(ProducerConfig.ACKS_CONFIG, kafka.getAcks());
+        producerConfig.put(ProducerConfig.RETRIES_CONFIG, kafka.getRetries());
+        producerConfig.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, kafka.getCompressionType());
+        producerConfig.put(ProducerConfig.BUFFER_MEMORY_CONFIG, kafka.getBufferMemory());
+        producerConfig.put(ProducerConfig.BATCH_SIZE_CONFIG, kafka.getBatchSize());
+        producerConfig.put(ProducerConfig.LINGER_MS_CONFIG, kafka.getLingerMs());
+        producerConfig.put(ProducerConfig.MAX_REQUEST_SIZE_CONFIG, kafka.getMaxRequestSize());
+        producerConfig.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, kafka.getRequestTimeoutMs());
         producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producer = new KafkaProducer(producerConfig);

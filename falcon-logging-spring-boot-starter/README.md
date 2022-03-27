@@ -1,3 +1,4 @@
+
 # falcon-logging-spring-boot-starter
 
 ##我是什么
@@ -16,15 +17,16 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 3. 运行项目产生日志后就可以到kibana里面查询日志了，查询前要先创建索引模式，关于kibana的使用方法百度下
 
 ######添加配置
-	spring.profiles.active=local // 必选，环境    
 	spring.application.name=falcon-logging-demo // 必选，应用名
+	spring.profiles.active=local // 必选，环境
+	
 	logging.falcon.kafka.servers=localhost:9092 // 必选，kafka地址
 	logging.falcon.kafka.topic=topic-logging // 必选，把日志发送到这个topic
 
-	logging.falcon.console=true // 可选，是否需要在控制台输出日志，values[true, false]，默认false
-    logging.falcon.debug=true // 可选，是否开启调试模式志，values[true, false]，默认false
-	logging.falcon.searchIndex=falcon // 可选，es索引，如果为空则按spring.application.name创建索引
-    logging.falcon.gather=kafka // 可选，日志采集方式，默认kafka
+	logging.falcon.console=false // 可选，是否需要在控制台输出日志，values[true, false]，默认false
+    logging.falcon.debug=false // 可选，是否启用调试模式，开启后可通过http请求头控制是否打印日志，values[true, false]，默认false
+	logging.falcon.searchIndex=falcon-all // 可选，es索引，如果为空则按spring.application.name创建索引
+	
 	logging.falcon.kafka.acks=0 // 可选，kafka的Producer参数
 	logging.falcon.kafka.retries=1 // 可选，kafka的Producer参数
 	logging.falcon.kafka.compressionType=gzip // 可选，kafka的Producer参数
@@ -32,6 +34,17 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 	logging.falcon.kafka.lingerMs=0 // 可选，kafka的Producer参数
 	logging.falcon.kafka.maxRequestSize=1048576 // 可选，kafka的Producer参数
 	logging.falcon.kafka.requestTimeoutMs=30000 // 可选，kafka的Producer参数
+
+	logging.falcon.mail.host=smtp.qq.com // 可选，邮件服务器地址
+	logging.falcon.mail.port=25 // 可选，邮件服务器默认端口
+	logging.falcon.mail.senderAccount=666666@qq.com // 可选，发件人邮箱账号
+	logging.falcon.mail.senderPassword=123456 // 可选，发件人邮箱密码
+	logging.falcon.mail.receiverAccounts=888888@qq.com,999999@qq.com // 可选，收件人邮箱账号，多个使用英文逗号分隔
+	logging.falcon.mail.frequency=3600 // 可选，同一错误日志多久内不能重复发送邮件，单位秒，默认不限制，如果开启限制则必须配置RedisTemplate相关配置，保证RedisTemplate可用
+	logging.falcon.mail.protocol=smtp // 可选，邮件发送协议，默认从host截取第一段
+	logging.falcon.mail.auth=true // 可选，是否需要验证用户名密码，values[true, false]，默认true
+	logging.falcon.mail.debug=false // 可选，是否启用调试模式，values[true, false]，默认true
+	
 
 ## 常见问题
 ##### 主线程的traceId怎么传递到子线程？

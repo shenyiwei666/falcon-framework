@@ -1,7 +1,6 @@
 package org.falconframework.logging.config;
 
 import lombok.Data;
-import org.falconframework.logging.gather.LoggingGatherEnum;
 
 @Data
 public class LoggingConfig {
@@ -32,19 +31,17 @@ public class LoggingConfig {
     private Boolean debug;
 
     /**
-     * 日志采集方式
-     *
-     * @see LoggingGatherEnum
-     */
-    private String gather;
-
-    /**
      * kafka配置
      */
-    private KafkaConfig kafka;
+    private Kafka kafka;
+
+    /**
+     * 告警邮件配置
+     */
+    private Mail mail;
 
     @Data
-    public static class KafkaConfig {
+    public static class Kafka {
 
         /**
          * broker连接地址，ip:端口,ip:端口
@@ -98,5 +95,54 @@ public class LoggingConfig {
 
     }
 
+    @Data
+    public static class Mail {
+
+        /**
+         * 邮件服务器地址
+         */
+        private String host;
+
+        /**
+         * 邮件发送协议，默认smtp
+         */
+        private String protocol;
+
+        /**
+         * 邮件服务器默认端口，默认25
+         */
+        private String port;
+
+        /**
+         * 是否需要验证用户名密码，values[true, false]，默认true
+         */
+        private Boolean auth;
+
+        /**
+         * 是否启用调试模式（启用调试模式可打印客户端与服务器交互过程时一问一答的响应消息），values[true, false]，默认false
+         */
+        private Boolean debug;
+
+        /**
+         * 发件人邮箱账号
+         */
+        private String senderAccount;
+
+        /**
+         * 发件人邮箱密码
+         */
+        private String senderPassword;
+
+        /**
+         * 收件人邮箱账号
+         */
+        private String[] receiverAccounts;
+
+        /**
+         * 同一错误日志多久内不能重复发送邮件，单位秒，默认不限制
+         */
+        private Integer frequency;
+
+    }
 
 }

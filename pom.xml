@@ -17,9 +17,9 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
-        <module>falcon-logging-spring-boot-starter</module>
         <module>falcon-dependencies</module>
         <module>falcon-commom</module>
+        <module>falcon-logging-spring-boot-starter</module>
     </modules>
 
     <name>falcon-framework</name>
