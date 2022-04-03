@@ -7,9 +7,10 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 ##我做了什么
 1. 把每次写入的日志都加上traceId，方便查询全链路日志
 2. 把写入的日志发送到kafka，然后通过ELK处理查询日志
-3. 对所有controller接口和dubbo接口都记录入参和出参日志，每个请求生成1个traceId
+3. 对所有controller接口和dubbo接口都记录入参和出参日志
 4. 服务间调用时传递traceId，目前支持的方式有RestTemplate、Feign、Dubbo
 5. MQ生产者的traceId传递到消费者，目前支持的MQ有RabbitMQ
+6. 对所有的ERROR级别日志发送邮件通知
 
 ##怎么使用我
 1. 在自己项目中添加falcon-logging-spring-boot-starter依赖
@@ -35,7 +36,7 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 	logging.falcon.kafka.maxRequestSize=1048576 // 可选，kafka的Producer参数
 	logging.falcon.kafka.requestTimeoutMs=30000 // 可选，kafka的Producer参数
 
-	logging.falcon.mail.host=smtp.qq.com // 可选，邮件服务器地址
+	logging.falcon.mail.host=smtp.qq.com // 可选，邮件服务器地址，不配置不发送错误日志邮件
 	logging.falcon.mail.port=25 // 可选，邮件服务器默认端口
 	logging.falcon.mail.senderAccount=666666@qq.com // 可选，发件人邮箱账号
 	logging.falcon.mail.senderPassword=123456 // 可选，发件人邮箱密码
@@ -45,8 +46,17 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 	logging.falcon.mail.auth=true // 可选，是否需要验证用户名密码，values[true, false]，默认true
 	logging.falcon.mail.debug=false // 可选，是否启用调试模式，values[true, false]，默认true
 	
-
+<br/><br/>
 ## 常见问题
+
+##### 哪些配置支持运行时修改？
+	logging.level.*
+	logging.falcon.debug
+	logging.falcon.mail.frequency
+	logging.falcon.mail.senderAccount
+	logging.falcon.mail.senderPassword
+	logging.falcon.mail.receiverAccounts
+
 ##### 主线程的traceId怎么传递到子线程？
     // 使用MdcRunnable将主线程中的MDC信息传递到子线程，这样子线程输入的日志就会带上主线程的traceId
     threadPool.execute(new MdcRunnable() {
@@ -57,15 +67,15 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
     });
 
 #####怎么设置某个接口不打印入参出参日志？
-1、spring在controller的方法上增加@IgnoreLog注解。<br/>
-2、dubbo在provider的方法上增加@IgnoreLog注解（要加到接口上，不能加到实现类上）。
+1、spring在controller的方法上增加@IgnoreLogging注解<br/>
+2、dubbo在provider的方法上增加@IgnoreLogging注解（要加到接口上，不能加到实现类上）<br/>
 
 ####性能压测时会产生大量日志导致topic积压，影响其它业务查询日志，如何让压测的请求不打印日志？
-1、服务添加配置logging.falcon.debug=true。<br/>
-2、在压测的请求Header头加上X-Logging-Ignore=true。
+1、服务添加配置logging.falcon.debug=true<br/>
+2、在压测的请求Header头加上X-Logging-Ignore=true<br/>
 
 
-<br/><br/><br/>
+<br/><br/>
 ## ELK搭建
 elk是指elasticsearch、logstash、kibana。应用程序将日志发送到kafka，然后logstash从kafka里面读取日志再写到elasticsearch，kibana再从elasticsearch里面搜索日志展示到界面。
 
@@ -133,7 +143,7 @@ elk是指elasticsearch、logstash、kibana。应用程序将日志发送到kafka
     output {
     	elasticsearch {
     		hosts => ["http://localhost:9200"]
-    		index => "log-%{app}-%{+yyyyMMdd}"
+    		index => "log-%{searchIndex}-%{+yyyyMMdd}"
     		#user => "elastic"
     		#password => "changeme"
     	}

@@ -4,173 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>2.3.1.RELEASE</version>-->
-<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-<!--    </parent>-->
-
-    <artifactId>falcon-starter-parent</artifactId>
-    <groupId>org.falconframework</groupId>
+    <artifactId>falcon-framework</artifactId>
+    <groupId>org.falcon</groupId>
     <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
     <modules>
         <module>falcon-dependencies</module>
+        <module>falcon-spring-boot-parent</module>
         <module>falcon-commom</module>
         <module>falcon-logging-spring-boot-starter</module>
     </modules>
-
-    <name>falcon-framework</name>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.version>3.1</maven.compiler.version>
-        <maven.sourcce.version>2.2.1</maven.sourcce.version>
-        <maven.release.version>2.4.1</maven.release.version>
-        <maven.install.version>2.4</maven.install.version>
-        <maven.deploy.version>2.7</maven.deploy.version>
-        <maven-surefire-plugin>2.22.1</maven-surefire-plugin>
-        <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
-        <falcon.version>1.0.0-SNAPSHOT</falcon.version>
-        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-        <spring-cloud-starter.version>2.1.6.RELEASE</spring-cloud-starter.version>
-        <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
-        <nacos-config-spring-boot-starter.version>0.2.3</nacos-config-spring-boot-starter.version>
-        <nacos-config-spring-boot-starter.version>0.2.3</nacos-config-spring-boot-starter.version>
-        <fastjson_version>1.2.72</fastjson_version>
-        <dubbo.version>2.7.8</dubbo.version>
-        <feign.version>11.0</feign.version>
-        <jna.version>5.3.1</jna.version>
-        <mysql.version>8.0.16</mysql.version>
-        <ojdbc6.version>11.2.0.4</ojdbc6.version>
-        <hikaricp.version>3.3.1</hikaricp.version>
-        <mybatis.version>3.5.3</mybatis.version>
-        <mybatis-spring.version>2.0.3</mybatis-spring.version>
-        <mybatis-spring-boot-starter.version>2.1.1</mybatis-spring-boot-starter.version>
-        <dynamic-datasource-spring-boot.version>3.0.0</dynamic-datasource-spring-boot.version>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
-        <hibernate-validator.version>6.0.17.Final</hibernate-validator.version>
-        <swagger-annotations.version>1.5.20</swagger-annotations.version>
-        <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-        <lombok.version>1.18.8</lombok.version>
-        <pagehelper.version>5.1.10</pagehelper.version>
-        <apollo.version>1.5.1</apollo.version>
-        <xxl-job.version>2.1.2</xxl-job.version>
-        <rocketmq-spring-boot-starter.version>2.1.1</rocketmq-spring-boot-starter.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
-        <commons-codec.version>1.13</commons-codec.version>
-        <commons-pool2.version>2.7.0</commons-pool2.version>
-        <guava.version>27.1-jre</guava.version>
-        <jackson-core.version>2.11.1</jackson-core.version>
-        <snakeyaml.version>1.24</snakeyaml.version>
-        <hutool.version>5.5.6</hutool.version>
-        <joda-time.verson>2.10.5</joda-time.verson>
-        <slf4j-api.version>1.7.28</slf4j-api.version>
-        <junit.version>4.12</junit.version>
-        <mockito-al.version>1.9.5</mockito-al.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-openfeign-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.falconframework</groupId>
-            <artifactId>falcon-commom</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.falconframework</groupId>
-            <artifactId>falcon-logging-spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-    </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.falconframework</groupId>
-                <artifactId>falcon-dependencies</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <configuration>
-                        <includePom>true</includePom>
-                        <excludeResources>true</excludeResources>
-                        <attach>true</attach>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
     <profiles>
         <profile>

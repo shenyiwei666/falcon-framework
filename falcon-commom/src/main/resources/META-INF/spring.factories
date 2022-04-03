@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-    org.falconframework.common.spring.CommonAutoConfiguration
+    org.falcon.common.spring.CommonAutoConfiguration

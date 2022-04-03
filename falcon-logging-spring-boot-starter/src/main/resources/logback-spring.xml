@@ -8,7 +8,7 @@
 
     <contextName>${logName}</contextName>
 
-    <appender name="CLOUD" class="org.falconframework.logging.CloudAppender">
+    <appender name="CLOUD" class="org.falcon.logging.CloudAppender">
         <encoder>
             <charset>UTF-8</charset>
             <pattern>${logPattern}</pattern>

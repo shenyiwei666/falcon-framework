@@ -1,3 +1,3 @@
-dubboProviderAdapter=org.falconframework.logging.adapter.dubbo.DubboProviderAdapter
-dubboConsumerAdapter=org.falconframework.logging.adapter.dubbo.DubboConsumerAdapter
-dubboParamPrinter=org.falconframework.logging.printer.DubboRequestPrinter
+dubboProviderAdapter=org.falcon.logging.adapter.dubbo.DubboProviderAdapter
+dubboConsumerAdapter=org.falcon.logging.adapter.dubbo.DubboConsumerAdapter
+dubboParamPrinter=org.falcon.logging.printer.DubboRequestPrinter
