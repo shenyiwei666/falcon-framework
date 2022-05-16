@@ -27,7 +27,7 @@
         <spring-cloud-alibaba.version>2.2.1.RELEASE</spring-cloud-alibaba.version>
         <nacos-config-spring-boot-starter.version>0.2.3</nacos-config-spring-boot-starter.version>
         <nacos-config-spring-boot-starter.version>0.2.3</nacos-config-spring-boot-starter.version>
-        <fastjson_version>1.2.72</fastjson_version>
+        <fastjson.version>1.2.72</fastjson.version>
         <dubbo.version>2.7.8</dubbo.version>
         <feign.version>11.0</feign.version>
         <jna.version>5.3.1</jna.version>
@@ -116,7 +116,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>${fastjson_version}</version>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <dependency>

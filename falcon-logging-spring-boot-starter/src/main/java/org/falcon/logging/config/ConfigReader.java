@@ -32,9 +32,9 @@ public class ConfigReader implements PropertySourceLocator {
     }
 
     public static LoggingConfig loadLoggingConfig(Environment environment) {
-        String app = ConfigUtil.getString(environment, ConfigConstant.SPRING_APP, true, null);
+        String app = ConfigUtil.getString(environment, ConfigConstant.SPRING_APP, true, "unknown");
+        String env = ConfigUtil.getString(environment, ConfigConstant.SPRING_ENV, true, "unknown");
         String searchIndex = ConfigUtil.getString(environment, ConfigConstant.SEARCH_INDEX, false, null);
-        String env = ConfigUtil.getString(environment, ConfigConstant.SPRING_ENV, true, null);
         Boolean console = ConfigUtil.getBoolean(environment, ConfigConstant.CONSOLE, true, "false");
         Boolean debug = ConfigUtil.getBoolean(environment, ConfigConstant.DEBUG, true, "false");
         LoggingConfig.Kafka kafka = loadKafkaConfig(environment);

@@ -18,9 +18,6 @@ ELK已成为目前最流行的集中式日志解决方案，而在日志查询�
 3. 运行项目产生日志后就可以到kibana里面查询日志了，查询前要先创建索引模式，关于kibana的使用方法百度下
 
 ###### 添加配置
-	spring.application.name=falcon-logging-demo // 必选，应用名
-	spring.profiles.active=local // 必选，环境
-	
 	logging.falcon.kafka.servers=localhost:9092 // 必选，kafka地址
 	logging.falcon.kafka.topic=topic-logging // 必选，把日志发送到这个topic
 
@@ -147,9 +144,9 @@ elk是指elasticsearch、logstash、kibana。应用程序将日志发送到kafka
     		#user => "elastic"
     		#password => "changeme"
     	}
-    	stdout{
-    		codec => rubydebug #输出到屏幕上，本地调试才打开
-    	}
+    	#stdout{
+    		#codec => rubydebug #输出到屏幕上，本地调试才打开
+    	#}
     }
 
 
